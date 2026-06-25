@@ -56,8 +56,9 @@ from infinigen_examples.util.generate_indoors_util import (
     place_cam_overhead,
     restrict_solving,
 )
+from infinigen_examples.human_spawn_sampler import sample_human_spawn_poses
 
-from . import (
+from infinigen_examples import (
     generate_nature,  # noqa: F401 # needed for nature gin configs to be loaded
 )
 
@@ -306,6 +307,14 @@ def compose_indoors(output_folder: Path, scene_seed: int, **overrides):
 
     p.run_stage(
         "populate_assets", populate.populate_state_placeholders, state, use_chance=False
+    )
+    p.run_stage(
+        "sample_human_spawn_poses",
+        sample_human_spawn_poses,
+        state,
+        solver,
+        output_folder,
+        use_chance=False,
     )
 
     def place_floating():

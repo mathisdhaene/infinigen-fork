@@ -8,6 +8,7 @@ import logging
 import math
 import shutil
 import subprocess
+import sys
 import warnings
 from collections import defaultdict
 from pathlib import Path
@@ -1300,7 +1301,11 @@ def make_args():
     parser.add_argument("-i", "--individual", action="store_true")
     parser.add_argument("-o", "--omniverse", action="store_true")
 
-    args = parser.parse_args()
+    if "--" in sys.argv:
+        argv = sys.argv[sys.argv.index("--") + 1 :]
+        args = parser.parse_args(argv)
+    else:
+        args = parser.parse_args()
 
     if args.format not in FORMAT_CHOICES:
         raise ValueError("Unsupported or invalid file format.")
